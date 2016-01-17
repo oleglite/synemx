@@ -31,22 +31,6 @@ class Matrix:
         matrix.m = libmx.matrix_create(h, w, initial_value)
         return matrix
 
-    @classmethod
-    def from_data(cls, data):
-        if not data or not all(data):
-            raise ValueError("Can't create empty Matrix")
-
-        if not all(len(v) == len(data[0]) for v in data):
-            raise ValueError('All rows must have the same size: %s' % data)
-
-        m = cls(len(data), len(data[0]))
-
-        for x in range(m.w):
-            for y in range(m.h):
-                m.set(y, x, data[y][x])
-
-        return m
-
     def get(self, y, x):
         self._check_index(y, x)
         return libmx.matrix_get(self.m, y, x)
