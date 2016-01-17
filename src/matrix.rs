@@ -5,31 +5,30 @@ use std::fmt;
 
 
 pub struct Matrix {
-    h: usize,  // number of signals, number of rows
-    w: usize, // number of impulses in signal, number of columns
-    matrix: DMat<f32>       // matrix where rows is signals
+    h: usize, 
+    w: usize,
+    matrix: DMat<f32>
 }
 
 
 impl Matrix {
-    /// Create message where all values is zeros
-    pub fn new(h: usize, w: usize, initial_value: f32) -> Matrix {
+    pub fn new(h: usize, w: usize, data: &[f32]) -> Matrix {
+        assert_eq!(h * w, data.len());
+
+        Matrix {
+            h: h,
+            w: w,
+            matrix: DMat::from_row_vec(h, w, data),
+        }
+    }
+
+    pub fn create(h: usize, w: usize, initial_value: f32) -> Matrix {
         Matrix {
             h: h,
             w: w,
             matrix: DMat::from_elem(h, w, initial_value),
         }
     }
-
-    // pub fn from_data(signals_number: usize, impulses_number: usize, data: &[f32]) -> Matrix {
-    //     assert_eq!(signals_number * impulses_number, data.len());
-
-    //     Matrix {
-    //         signals_number: signals_number,
-    //         impulses_number: impulses_number,
-    //         matrix: DMat::from_row_vec(signals_number, impulses_number, data),
-    //     }
-    // }
 
     pub fn get(&self, y: usize, x: usize) -> f32 {
         self.matrix[(y, x)]
