@@ -1,0 +1,12 @@
+[package]
+authors = ["Oleg Beloglazov <beloglazov.oleg@gmail.com>"]
+name = "mx"
+version = "0.1.0"
+
+[dependencies]
+libc = "0.2.4"
+nalgebra = "0.5.1"
+
+[lib]
+crate-type = ["dylib"]
+name = "mx"
