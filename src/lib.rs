@@ -29,3 +29,8 @@ pub extern fn matrix_get(m: &Matrix, y: size_t, x: size_t) -> c_float {
 pub extern fn matrix_set(m: &mut Matrix, y: size_t, x: size_t, value: c_float) {
     m.set(y as usize, x as usize, value as f32);
 }
+
+#[no_mangle]
+pub extern fn matrix_average_similarity(m1: &mut Matrix, m2: &mut Matrix) -> f32 {
+    m1.average_similarity(m2)
+}

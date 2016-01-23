@@ -39,11 +39,19 @@ class Matrix:
         self._check_index(y, x)
         libmx.matrix_set(self.m, y, x, value)
 
+    def rows(self):
+        return iter(self.get_data())
+
     def get_data(self):
         return [
-           [self.get(y, x) for x in range(self.w)]
+           [libmx.matrix_get(self.m, y, x) for x in range(self.w)]
            for y in range(self.h)
         ]
+
+    def average_similarity(self, other):
+        if not (self.h == other.h and self.w == other.w):
+            raise ValueError('Can\'t compare matrixes with different sizes')
+        return libmx.matrix_average_similarity(self.m, other.m)
 
     def _check_index(self, y, x):
         if y >= self.h or x >= self.w:

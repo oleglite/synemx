@@ -92,3 +92,56 @@ def test_get_data():
         [1.0, 2.0, 3.0],
     ]
     assert m.get_data() == expected_data
+
+
+def test_rows():
+    m = Matrix.create(2, 3, 1.0)
+
+    expected_data = [
+        [1.0, 1.0, 1.0],
+        [1.0, 1.0, 1.0],
+    ]
+    assert list(m.rows()) == expected_data
+
+    m.set(1, 1, 2.0)
+    m.set(1, 2, 3.0)
+
+    expected_data = [
+        [1.0, 1.0, 1.0],
+        [1.0, 2.0, 3.0],
+    ]
+    assert list(m.rows()) == expected_data
+
+
+def test_average_similarity():
+    m1 = Matrix([
+        [0.1, 0.2, 0.3],
+        [0.4, 0.5, 0.6],
+    ])
+    m2 = Matrix([
+        [0.1, 0.1, 0.1],
+        [0.4, 0.4, 0.4],
+    ])
+
+    # [0] sum min = 0.3, sum max = 0.6, limit = 0.3, res = 0.3 * 0.3 / 0.6 = 0.15
+    # [1] sum min = 1.2, sum max = 1.5, limit = 0.6, res = 0.6 * 1.2 / 1.5 = 0.48
+    # avg = 0.315
+
+    sim = m1.average_similarity(m2)
+    assert almost_equal(sim, 0.315)
+
+    m3 = Matrix([
+        [0.1, 0.2],
+        [0.4, 0.5],
+    ])
+    with pytest.raises(ValueError):
+        m1.average_similarity(m3)
+
+    m4 = Matrix([
+        [0.1, 0.1, 0.1],
+        [0.4, 0.4, 0.4],
+        [0.4, 0.4, 0.4],
+    ])
+    with pytest.raises(ValueError):
+        m1.average_similarity(m4)
+
