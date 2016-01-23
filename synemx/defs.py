@@ -35,3 +35,5 @@ libmx.matrix_set.argtypes = [MatrixPointer, c_size_t, c_size_t, c_float]
 
 libmx.matrix_average_similarity.argtypes = [MatrixPointer, MatrixPointer]
 libmx.matrix_average_similarity.restype = c_float
+
+libmx.matrix_approximate.argtypes = [MatrixPointer, MatrixPointer, c_float]

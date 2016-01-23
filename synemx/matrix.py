@@ -49,15 +49,26 @@ class Matrix:
         ]
 
     def average_similarity(self, other):
-        if not (self.h == other.h and self.w == other.w):
-            raise ValueError('Can\'t compare matrixes with different sizes')
+        self._check_size(other)
         return libmx.matrix_average_similarity(self.m, other.m)
+
+    def approximate(self, other, factor):
+        self._check_size(other)
+        libmx.matrix_approximate(self.m, other.m, factor)
 
     def _check_index(self, y, x):
         if y >= self.h or x >= self.w:
             raise IndexError('Wrong index (%s, %s) for Matrix(%s, %s)' % (y, x, self.h, self.w))
 
+    def _check_size(self, other):
+        if not (self.h == other.h and self.w == other.w):
+            raise ValueError('Can\'t compare matrixes with different sizes')
+
     def __eq__(self, other):
         if type(other) != type(self):
             return False
         return self.get_data() == other.get_data()
+
+    def __repr__(self):
+        result = 'Matrix([\n    %s\n])' % (',\n    '.join(map(str, self.get_data())))
+        return result

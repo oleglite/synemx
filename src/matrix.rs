@@ -48,6 +48,24 @@ impl Matrix {
         }
         sim / (self.h as f32)
     }
+
+    pub fn approximate(&mut self, other: &Matrix, factor: f32) {
+        assert_eq!(self.h, other.h);
+        assert_eq!(self.w, other.w);
+
+        for x in 0..self.w {
+            for y in 0..self.h {
+                let self_v = self.matrix[(y, x)];
+                let other_v = other.matrix[(y, x)];
+
+                if other_v >= self_v {
+                    self.matrix[(y, x)] = braking_add(self_v, other_v * factor);
+                } else {
+                    self.matrix[(y, x)] = braking_sub(self_v, (self_v - other_v) * factor);
+                }
+            }
+        }
+    }
 }
 
 
@@ -90,4 +108,14 @@ fn similarity(v1: DVec<f32>, v2: DVec<f32>) -> f32 {
     } else {
         0.0
     }
+}
+
+
+fn braking_add(a: f32, b: f32) -> f32 {
+    a + (1.0 - a) * b
+}
+
+
+fn braking_sub(a: f32, b: f32) -> f32 {
+    a - a * b
 }

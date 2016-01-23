@@ -9,6 +9,14 @@ def almost_equal(v1, v2):
     return abs(v1 - v2) < 0.000001
 
 
+def matrixes_almost_equal(m1, m2):
+    for r1, r2 in zip(m1.get_data(), m2.get_data()):
+        for v1, v2 in zip(r1, r2):
+            if not almost_equal(v1, v2):
+                return False
+    return True
+
+
 def test_new_matrix():
     data = [
         [1.0, 2.0, 3.0],
@@ -145,3 +153,81 @@ def test_average_similarity():
     with pytest.raises(ValueError):
         m1.average_similarity(m4)
 
+
+def test_approximate_nothing():
+    m1 = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    m2 = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+
+    m1.approximate(m2, 1.0)
+    expected = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    assert matrixes_almost_equal(m1, expected)
+
+
+def test_approximate_zero_intensity():
+    m1 = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    m2 = Matrix([
+        [0.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0],
+    ])
+
+    m1.approximate(m2, 0.0)
+    expected = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    assert matrixes_almost_equal(m1, expected)
+
+
+def test_approximate_max_intensity():
+    m1 = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    m2 = Matrix([
+        [0.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0],
+    ])
+
+    m1.approximate(m2, 1.0)
+    expected = Matrix([
+        [0.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0],
+    ])
+    assert matrixes_almost_equal(m1, expected)
+
+
+def test_approximate_some_intensity():
+    m1 = Matrix([
+        [1.0, 0.0, 0.0],
+        [1.0, 0.0, 0.0],
+    ])
+    m2 = Matrix([
+        [0.0, 0.0, 1.0],
+        [0.0, 1.0, 0.0],
+    ])
+
+    m1.approximate(m2, 0.1)
+    expected = Matrix([
+        [0.9, 0.0, 0.1],
+        [0.9, 0.1, 0.0],
+    ])
+    assert matrixes_almost_equal(m1, expected)
+
+    m1.approximate(m2, 0.1)
+    expected = Matrix([
+        [0.819, 0.0, 0.19],
+        [0.819, 0.19, 0.0],
+    ])
+    assert matrixes_almost_equal(m1, expected)

@@ -31,6 +31,11 @@ pub extern fn matrix_set(m: &mut Matrix, y: size_t, x: size_t, value: c_float) {
 }
 
 #[no_mangle]
-pub extern fn matrix_average_similarity(m1: &mut Matrix, m2: &mut Matrix) -> f32 {
+pub extern fn matrix_average_similarity(m1: &Matrix, m2: &Matrix) -> f32 {
     m1.average_similarity(m2)
+}
+
+#[no_mangle]
+pub extern fn matrix_approximate(m1: &mut Matrix, m2: &Matrix, factor: f32) {
+    m1.approximate(m2, factor);
 }
