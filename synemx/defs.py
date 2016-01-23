@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+import os
 from ctypes import cdll, Structure, c_size_t, c_void_p, c_float, POINTER
 
-LIBRARY_PATH = "target/release/libmx.dylib"
+synemx_path = os.path.dirname(os.path.realpath(__file__))
+LIBRARY_PATH = os.path.join(synemx_path, "../target/release/libmx.dylib")
 
 libmx = cdll.LoadLibrary(LIBRARY_PATH)
 

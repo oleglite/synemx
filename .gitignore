@@ -5,3 +5,10 @@ Cargo.lock
 # Python
 .idea
 test/.cache
+.cache
+.eggs
+build
+dist
+synemx.egg-info
+AUTHORS
+ChangeLog
